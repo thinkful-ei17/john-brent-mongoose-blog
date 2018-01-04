@@ -38,13 +38,15 @@ router.get('/stories', (req, res) => {
 // Need to matchup knex ID in database with req.params.id
 // Then return that one full object or story with res.json
 router.get('/stories/:id', (req, res) => {
+  // console.log(req.params.id);
   knex 
-    .select('id', 'title', 'content')
+    .select('title', 'content')
     .from('stories')
     .where ('id', req.params.id)
     .orderBy('title')
     .then(results => {
-      res.json(results);
+      console.log(results);
+      res.json(results[0]);
     })
     .catch(err => {
       console.error(err);
@@ -61,18 +63,34 @@ router.get('/stories/:id', (req, res) => {
 
 /* ========== POST/CREATE ITEM ========== */
 router.post('/stories', (req, res) => {
+
   const {title, content} = req.body;
   
-  /***** Never Trust Users! *****/  
-  const newItem = {
-    id: data.nextVal++,
-    title: title,
-    content: content
-  };
-  data.push(newItem);
-
-  res.location(`${req.originalUrl}/${newItem.id}`).status(201).json(newItem);
+  knex('stories')
+    .insert({title: title, content: content}) 
+    .returning(['id', 'title', 'content'])
+    .then(results => {
+      res.location(`${req.originalUrl}/${results.id}`).status(201).json(results);
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json(err.message);
+    });
 });
+
+
+// router.post('/stories', (req, res) => {
+//   const {title, content} = req.body;
+  
+//   /***** Never Trust Users! *****/  
+//   const newItem = {
+//     id: data.nextVal++,
+//     title: title,
+//     content: content
+//   };
+//   data.push(newItem);
+//   res.location(`${req.originalUrl}/${newItem.id}`).status(201).json(newItem);
+// });
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/stories/:id', (req, res) => {
