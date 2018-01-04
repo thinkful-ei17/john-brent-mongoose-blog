@@ -95,21 +95,30 @@ router.post('/stories', (req, res) => {
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/stories/:id', (req, res) => {
   const {title, content} = req.body;
+  knex('stories')
+    .update({'title':title,'content':content})
+    .where('id',req.params.id)
+    .returning(['id','title','content'])
+    .then(results => {
+      res.json(results[0]);});
+
   
   /***** Never Trust Users! *****/
   
-  const id = Number(req.params.id);
-  const item = data.find((obj) => obj.id === id);
-  Object.assign(item, {title, content});
-  res.json(item);
+  // const id = Number(req.params.id);
+  // const item = data.find((obj) => obj.id === id);
+  // Object.assign(item, {title, content});
+  // res.json(item);
 });
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/stories/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const index = data.findIndex((obj) => obj.id === id);
-  data.splice(index, 1);
-  res.status(204).end();
+
+  
+  // const id = Number(req.params.id);
+  // const index = data.findIndex((obj) => obj.id === id);
+  // data.splice(index, 1);
+  // res.status(204).end();
 });
 
 module.exports = router;

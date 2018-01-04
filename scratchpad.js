@@ -11,10 +11,10 @@
   // - [] Add`knex` and`pg` to the project
   // - [] Update`config.js` with DB connection info
     // - [] Import`knex` and database config into the router file
-      - [] Update GET`/api/v1/stories` endpoint to use`knex.select()...`
-      // COME BACK TO ME ^^^^^
-        - [] Update GET`/api/v1/stories/:id` endpoint to use`knex.select()...`
-          - [] Update POST`/api/v1/stories/` endpoint to use`knex.insert()...`
+      // - [] Update GET`/api/v1/stories` endpoint to use`knex.select()...`
+      // // COME BACK TO ME ^^^^^
+      //   - [] Update GET`/api/v1/stories/:id` endpoint to use`knex.select()...`
+      //     - [] Update POST`/api/v1/stories/` endpoint to use`knex.insert()...`
             - [] Update PUT`/api/v1/stories/:id` endpoint to use`knex.update()...`
               - [] Update DELETE`/api/v1/stories/:id` endpoint to use`knex.del()...`
 
