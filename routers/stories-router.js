@@ -70,7 +70,8 @@ router.post('/stories', (req, res) => {
     .insert({title: title, content: content}) 
     .returning(['id', 'title', 'content'])
     .then(results => {
-      res.location(`${req.originalUrl}/${results.id}`).status(201).json(results);
+      console.log(results);
+      res.location(`${req.originalUrl}/${results.id}`).status(201).json(results[0]);
     })
     .catch(err => {
       console.error(err);
