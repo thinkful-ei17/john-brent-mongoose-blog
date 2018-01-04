@@ -40,7 +40,7 @@ router.get('/stories', (req, res) => {
 router.get('/stories/:id', (req, res) => {
   // console.log(req.params.id);
   knex 
-    .select('title', 'content')
+    .select('id','title', 'content')
     .from('stories')
     .where ('id', req.params.id)
     .orderBy('title')
@@ -113,8 +113,11 @@ router.put('/stories/:id', (req, res) => {
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/stories/:id', (req, res) => {
+  knex('stories')
+    .where('id', req.params.id)
+    .del()
+    .then(res.status(204).end());
 
-  
   // const id = Number(req.params.id);
   // const index = data.findIndex((obj) => obj.id === id);
   // data.splice(index, 1);
