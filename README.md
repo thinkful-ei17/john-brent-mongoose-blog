@@ -27,7 +27,7 @@ You have been hired to complete an API for a blog app. The previous developer ha
   > Note: remember to save the CREATE TABLE and INSERT INTO queries in a file so they can be easily run again later. Examples:
 
       psql -f ./query.sql -U <username> -d blog-app
-      postgres://<USERNAME>:<PASSWORD>@<SERVER:PORT>/<DATABASE>
+      psql -f ./query.sql postgres://<USERNAME>:<PASSWORD>@<SERVER:PORT>/<DATABASE>
 
 - Wire-up database to the endpoints. IOW, replace **dummy data** with real database calls.
   - [ ] Add `knex` and `pg` to the project

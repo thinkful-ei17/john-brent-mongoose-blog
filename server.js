@@ -5,7 +5,8 @@ const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const storiesRouter = require('./routers/stories-router');
-const { PORT } = require('./config');
+const { DATABASE, PORT } = require('./config');
+const knex = require('knex')(DATABASE);
 
 const app = express();
 
