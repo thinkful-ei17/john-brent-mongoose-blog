@@ -25,6 +25,3 @@
       - [] Push app to Heroku. (Note: app won't work yet)
         - [] Create a production database on Elephant SQL.Use`query.sql` from earlier to easily create the database
         - [] Configure Heroku config vars to use`DATABASE_URL` and the Elephant SQL connection string  
-
-
-

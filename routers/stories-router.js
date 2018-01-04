@@ -13,10 +13,11 @@ const knex = require('knex')(DATABASE);
 router.get('/stories', (req, res) => {
 
   knex
-    .select()
+    .select('id', 'title', 'content')
     .from('stories')
-    .then((resultSet) => {
-      return res.json(resultSet);
+    .orderBy('title')
+    .then(results => {
+      res.json(results);
     })
     .catch(err => {
       console.error(err);
@@ -33,11 +34,30 @@ router.get('/stories', (req, res) => {
 });
 
 /* ========== GET/READ SINGLE ITEMS ========== */
+//knex version
+// Need to matchup knex ID in database with req.params.id
+// Then return that one full object or story with res.json
 router.get('/stories/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const item = data.find((obj) => obj.id === id);
-  res.json(item);
+  knex 
+    .select('id', 'title', 'content')
+    .from('stories')
+    .where ('id', req.params.id)
+    .orderBy('title')
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json(err.message);
+    });
 });
+
+//static version
+// router.get('/stories/:id', (req, res) => {
+//   const id = Number(req.params.id);
+//   const item = data.find((obj) => obj.id === id);
+//   res.json(item);
+// });
 
 /* ========== POST/CREATE ITEM ========== */
 router.post('/stories', (req, res) => {
