@@ -23,7 +23,7 @@ router.get('/stories', (req, res) => {
       console.error(err);
       return res.status(500).json(err.message);
     });
- 
+
 
   // if (req.query.search) {
   //   const filtered = data.filter((obj) => obj.title.includes(req.query.search));
@@ -39,10 +39,10 @@ router.get('/stories', (req, res) => {
 // Then return that one full object or story with res.json
 router.get('/stories/:id', (req, res) => {
   // console.log(req.params.id);
-  knex 
-    .select('id','title', 'content')
+  knex
+    .select('id', 'title', 'content')
     .from('stories')
-    .where ('id', req.params.id)
+    .where('id', req.params.id)
     .orderBy('title')
     .then(results => {
       console.log(results);
@@ -69,10 +69,10 @@ router.get('/stories/:id', (req, res) => {
 /* ========== POST/CREATE ITEM ========== */
 router.post('/stories', (req, res) => {
 
-  const {title, content} = req.body;
-  
+  const { title, content } = req.body;
+
   knex('stories')
-    .insert({title: title, content: content}) 
+    .insert({ title: title, content: content })
     .returning(['id', 'title', 'content'])
     .then(results => {
       console.log(results);
@@ -87,7 +87,7 @@ router.post('/stories', (req, res) => {
 
 // router.post('/stories', (req, res) => {
 //   const {title, content} = req.body;
-  
+
 //   /***** Never Trust Users! *****/  
 //   const newItem = {
 //     id: data.nextVal++,
@@ -100,17 +100,18 @@ router.post('/stories', (req, res) => {
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/stories/:id', (req, res) => {
-  const {title, content} = req.body;
+  const { title, content } = req.body;
   knex('stories')
-    .update({'title':title,'content':content})
-    .where('id',req.params.id)
-    .returning(['id','title','content'])
+    .update({ 'title': title, 'content': content })
+    .where('id', req.params.id)
+    .returning(['id', 'title', 'content'])
     .then(results => {
-      res.json(results[0]);});
+      res.json(results[0]);
+    });
 
-  
+
   /***** Never Trust Users! *****/
-  
+
   // const id = Number(req.params.id);
   // const item = data.find((obj) => obj.id === id);
   // Object.assign(item, {title, content});

@@ -5,6 +5,7 @@ const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const storiesRouter = require('./routers/stories-router');
+const routerV2 = require('./routers/v2-router');
 const { PORT } = require('./config');
 
 
@@ -16,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 app.use('/api/v1', storiesRouter);
+app.use('/api/v2', routerV2);
 
 // Catch-all endpoint for requests to non-existent endpoint
 app.use(function (req, res, next) {
