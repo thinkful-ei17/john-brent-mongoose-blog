@@ -28,18 +28,22 @@ router.get('/authors',  (req, res) => {
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/stories', (req, res) => {
 
-  knex
-    .select('id', 'title', 'content')
-    .from('stories')
-    // .innerJoin('authors')
+  knex('stories')
+    .innerJoin('authors', 'stories.author_id', '=', 'authors.id')
+    .select('stories.id', 'title', 'content', 'author_id', 'authors.username as authorName')
     .orderBy('title')
     .then(results => {
+      console.log(results);
       res.json(results);
     })
     .catch(err => {
       console.error(err);
       return res.status(500).json(err.message);
     });
+
+  // SELECT users.id, email, username, items.id, name, description, completed, user_id 
+    // FROM users 
+    // JOIN items ON authors.id = stories.author_id;
 
 
   // if (req.query.search) {
