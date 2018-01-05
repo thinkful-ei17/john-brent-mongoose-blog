@@ -42,8 +42,8 @@ router.get('/stories', (req, res) => {
     });
 
   // SELECT users.id, email, username, items.id, name, description, completed, user_id 
-    // FROM users 
-    // JOIN items ON authors.id = stories.author_id;
+  // FROM users 
+  // JOIN items ON authors.id = stories.author_id;
 
 
   // if (req.query.search) {
@@ -59,11 +59,10 @@ router.get('/stories', (req, res) => {
 // Need to matchup knex ID in database with req.params.id
 // Then return that one full object or story with res.json
 router.get('/stories/:id', (req, res) => {
-  // console.log(req.params.id);
-  knex
-    .select('id', 'title', 'content')
-    .from('stories')
-    .where('id', req.params.id)
+  knex('stories')
+    .innerJoin('authors', 'stories.author_id', '=', 'authors.id')
+    .select('stories.id', 'title', 'content', 'author_id', 'authors.username as authorName')
+    .where('stories.id', req.params.id)
     .orderBy('title')
     .then(results => {
       console.log(results);

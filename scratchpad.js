@@ -1,3 +1,5 @@
+import { create } from "domain";
+
 
   //               - Deploy to Heroku(see[Deploying to Heroku](https://courses.thinkful.com/node-001v5/project/1.3.5))
   // -[] Install Heroku CLI app, if necessary
@@ -21,9 +23,15 @@ You create the following high - level tasks:
 //       - `username`: regular text.Required.
 //       - `email`: regular text.Required.
 //   - [] Add`author_id` foreign key column the stories table that references the authors table.
-  > Note, when we delete a story, we **do not ** want to delete the associate`author`, so choose the correct`ON DELETE` contraint. 
-  - [] Add a dummy authors to the db and update stories to have authors.
-- Create a ** V2 ** router file
-  - [] Create a`/router/stories-router-v2.js` router file
-    - [] Require the router file in `server.js` and "mount" using`app.use()`
+  // > Note, when we delete a story, we **do not ** want to delete the associate`author`, so choose the correct`ON DELETE` contraint. 
+//   - [] Add a dummy authors to the db and update stories to have authors.
+// - Create a ** V2 ** router file
+  // - [] Create a`/router/stories-router-v2.js` router file
+    // - [] Require the router file in `server.js` and "mount" using`app.use()`
       - Update the queries in the V2 endpoints to use`author` info.
+      // update get all 
+      // update get by id
+      update UPDATE
+      update create
+      update delete
+      
