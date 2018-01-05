@@ -89,14 +89,13 @@ router.get('/stories/:id', (req, res) => {
 /* ========== POST/CREATE ITEM ========== */
 router.post('/stories', (req, res) => {
 
-  const { title, content } = req.body;
+  const { title, content, author_id} = req.body;
 
   knex('stories')
-    .insert({ title: title, content: content })
-    .returning(['id', 'title', 'content'])
+    .insert({ title, content, author_id})
+    .returning(['id', 'title', 'content','author_id'])
     .then(results => {
-      console.log(results);
-      res.location(`${req.originalUrl}/${results.id}`).status(201).json(results[0]);
+      res.location(`${req.originalUrl}/${results[0].id}`).status(201).json(results[0]);
     })
     .catch(err => {
       console.error(err);
@@ -120,11 +119,11 @@ router.post('/stories', (req, res) => {
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/stories/:id', (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, author_id } = req.body;
   knex('stories')
-    .update({ 'title': title, 'content': content })
+    .update({title, content, author_id })
     .where('id', req.params.id)
-    .returning(['id', 'title', 'content'])
+    .returning(['id', 'title', 'content', 'author_id'])
     .then(results => {
       res.json(results[0]);
     });

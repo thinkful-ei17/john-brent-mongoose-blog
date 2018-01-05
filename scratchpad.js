@@ -31,7 +31,7 @@ You create the following high - level tasks:
       - Update the queries in the V2 endpoints to use`author` info.
       // update get all 
       // update get by id
-      update UPDATE
       update create
+      update UPDATE
       update delete
       
