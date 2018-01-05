@@ -9,12 +9,29 @@ const router = express.Router();
 const { DATABASE } = require('../config');
 const knex = require('knex')(DATABASE);
 
+
+/* ========== GET ALL AUTHORS ========== */
+
+router.get('/authors',  (req, res) => {
+  knex
+    .select('id', 'email', 'username')
+    .from('authors')
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json(err.message);
+    });
+});
+
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/stories', (req, res) => {
 
   knex
     .select('id', 'title', 'content')
     .from('stories')
+    // .innerJoin('authors')
     .orderBy('title')
     .then(results => {
       res.json(results);

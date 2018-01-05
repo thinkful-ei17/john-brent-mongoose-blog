@@ -11,8 +11,7 @@ CREATE TABLE stories (
   id serial PRIMARY KEY,
   title text NOT NULL,
   content text,
-  author_id int REFERENCES authors 
-  
+  author_id int REFERENCES authors
 );
 
 
