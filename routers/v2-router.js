@@ -3,9 +3,6 @@
 const express = require('express');
 const router = express.Router();
 
-// const data = require('../db/dummy-data');
-
-
 const { DATABASE } = require('../config');
 const knex = require('knex')(DATABASE);
 
@@ -29,8 +26,9 @@ router.get('/authors',  (req, res) => {
 router.get('/stories', (req, res) => {
 
   knex('stories')
-    .innerJoin('authors', 'stories.author_id', '=', 'authors.id')
+    .innerJoin('authors', 'stories.author_id',  'authors.id')
     .select('stories.id', 'title', 'content', 'author_id', 'authors.username as authorName')
+    //.orderBy('created')
     .orderBy('title')
     .then(results => {
       console.log(results);
@@ -41,17 +39,6 @@ router.get('/stories', (req, res) => {
       return res.status(500).json(err.message);
     });
 
-  // SELECT users.id, email, username, items.id, name, description, completed, user_id 
-  // FROM users 
-  // JOIN items ON authors.id = stories.author_id;
-
-
-  // if (req.query.search) {
-  //   const filtered = data.filter((obj) => obj.title.includes(req.query.search));
-  //   res.json(filtered);
-  // } else {
-  //   res.json(data);
-  // }
 });
 
 /* ========== GET/READ SINGLE ITEMS ========== */
@@ -60,13 +47,11 @@ router.get('/stories', (req, res) => {
 // Then return that one full object or story with res.json
 router.get('/stories/:id', (req, res) => {
   knex('stories')
-    .innerJoin('authors', 'stories.author_id', '=', 'authors.id')
-    .select('stories.id', 'title', 'content', 'author_id', 'authors.username as authorName')
+    .select('stories.id', 'title', 'content', 'authors.id as authorId', 'username as authorName')
+    .innerJoin('authors', 'stories.author_id', 'authors.id')
     .where('stories.id', req.params.id)
-    .orderBy('title')
-    .then(results => {
-      console.log(results);
-      res.json(results[0]);
+    .then(([results]) => {
+      res.json(results);
     })
     .catch(err => {
       console.error(err);
@@ -94,12 +79,14 @@ router.post('/stories', (req, res) => {
   knex('stories')
     .insert({ title, content, author_id})
     .returning(['id', 'title', 'content','author_id'])
-    .then(results => {
-      res.location(`${req.originalUrl}/${results[0].id}`).status(201).json(results[0]);
+    .then(([result]) => {
+      return knex.select('stories.id', 'title', 'content', 'username as authorName', 'authors.id as authorId')
+        .from('stories')
+        .innerJoin('authors', 'stories.author_id', 'authors.id')
+        .where('stories.id', result.id);
     })
-    .catch(err => {
-      console.error(err);
-      return res.status(500).json(err.message);
+    .then(([result]) => {
+      res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
     });
 });
 
@@ -121,11 +108,17 @@ router.post('/stories', (req, res) => {
 router.put('/stories/:id', (req, res) => {
   const { title, content, author_id } = req.body;
   knex('stories')
-    .update({title, content, author_id })
+    .update({ title, content, author_id })
     .where('id', req.params.id)
     .returning(['id', 'title', 'content', 'author_id'])
-    .then(results => {
-      res.json(results[0]);
+    .then(([result]) => {
+      return knex('stories')
+        .select('stories.id', 'title', 'content', 'username as authorName', 'authors.id as authorId')
+        .innerJoin('authors', 'stories.author_id', 'authors.id')
+        .where('stories.id', result.id);
+    })
+    .then(([result]) => {
+      res.json(result);
     });
 
 
