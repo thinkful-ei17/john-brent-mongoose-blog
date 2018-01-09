@@ -80,7 +80,8 @@ router.post('/stories', (req, res) => {
     .insert({ title, content, author_id})
     .returning(['id', 'title', 'content','author_id'])
     .then(([result]) => {
-      return knex.select('stories.id', 'title', 'content', 'username as authorName', 'authors.id as authorId')
+      return knex
+        .select('stories.id', 'title', 'content', 'username as authorName', 'authors.id as authorId')
         .from('stories')
         .innerJoin('authors', 'stories.author_id', 'authors.id')
         .where('stories.id', result.id);
