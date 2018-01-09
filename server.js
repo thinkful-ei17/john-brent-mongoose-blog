@@ -48,9 +48,19 @@ app.get('/posts/:id',(req, res) => {
 });
 
 
-app.post('/posts', (req,res) =>{
-  const {title,author,content} = req.body
-  console.log(title,author,content);
+app.post('/posts', (req,res) => {
+  const requiredFields = ['title','author','content'];
+  requiredFields.forEach(
+    function(item) {
+      const field = item
+      if(!(field in req.body)) {
+        const msg = `Missing ${field} in body`
+        console.error(msg);
+        return res.status(400).send(msg);
+      }
+    }
+  )
+  const {title,author,content} = req.body;
   Story
   .create({
     title,
@@ -58,11 +68,24 @@ app.post('/posts', (req,res) =>{
     content
   })
   .then(posts => res.json(posts.serialize()))
-    .catch(err => {
+  .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     });
 });
+
+
+
+app.delete('/posts/:id',(req,res) =>{
+  Story
+  .findByIdAndRemove(req.params.id)
+  .then(posts => res.status(204).end())
+  .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    })
+})
+
 
 // /* ========== GET/READ SINGLE ITEMS ========== */
 // //knex version
