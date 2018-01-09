@@ -40,13 +40,29 @@ app.get('/posts', (req, res) => {
 
 app.get('/posts/:id',(req, res) => {
   Story.findById(req.params.id)
-    .then(restaurant => res.json(restaurant.serialize()))
+    .then(posts => res.json(posts.serialize()))
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     });
 });
 
+
+app.post('/posts', (req,res) =>{
+  const {title,author,content} = req.body
+  console.log(title,author,content);
+  Story
+  .create({
+    title,
+    author,
+    content
+  })
+  .then(posts => res.json(posts.serialize()))
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
 
 // /* ========== GET/READ SINGLE ITEMS ========== */
 // //knex version
